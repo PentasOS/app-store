@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0f0f10">
+<title>Store — каталог приложений</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-mark"></span>
+      <span class="brand-name">Store</span>
+    </div>
+    <input id="search" class="search" type="search" placeholder="Поиск приложений" autocomplete="off">
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1>Каталог приложений</h1>
+    <p class="hero-sub">Скачивание прямо отсюда. Обновления тоже.</p>
+  </section>
+
+  <div id="grid" class="grid"></div>
+  <p id="empty" class="empty" hidden>Ничего не найдено.</p>
+</main>
+
+<footer class="footer">
+  <span id="count"></span>
+</footer>
+
+<div id="modal" class="modal" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-card" role="dialog" aria-modal="true">
+    <button class="modal-close" data-close aria-label="Закрыть">&times;</button>
+    <div class="modal-head">
+      <div id="m-icon" class="app-icon big"></div>
+      <div>
+        <h2 id="m-name"></h2>
+        <div id="m-sub" class="app-sub"></div>
+      </div>
+    </div>
+    <p id="m-desc" class="modal-desc"></p>
+    <dl class="spec">
+      <div><dt>Версия</dt><dd id="m-version"></dd></div>
+      <div><dt>Размер</dt><dd id="m-size"></dd></div>
+      <div><dt>Дата</dt><dd id="m-date"></dd></div>
+      <div><dt>Файл</dt><dd id="m-file"></dd></div>
+    </dl>
+    <a id="m-download" class="btn btn-primary" download>Скачать APK</a>
+    <a id="m-page" class="btn btn-ghost" target="_blank" rel="noopener">Страница релиза</a>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
