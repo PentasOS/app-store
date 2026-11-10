@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0f0f10">
+<meta name="robots" content="noindex, nofollow">
+<title>Store — админка</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="admin">
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-mark"></span>
+      <span class="brand-name">Store <span class="tag">admin</span></span>
+    </div>
+    <a class="btn btn-ghost small" href="index.html">← В каталог</a>
+  </div>
+</header>
+
+<main class="wrap narrow">
+
+  <section class="panel">
+    <h2>Доступ</h2>
+    <p class="hint">
+      Токен хранится только в этом браузере (localStorage) и уходит напрямую в api.github.com.
+      Нужен classic PAT со scope <code>repo</code>. Открытая админка без токена ничего не может сделать.
+    </p>
+    <div class="row">
+      <input id="token" class="input" type="password" placeholder="ghp_..." autocomplete="off">
+      <button id="save-token" class="btn btn-primary">Сохранить</button>
+      <button id="clear-token" class="btn btn-ghost">Забыть</button>
+    </div>
+    <div id="auth-status" class="status"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Действия</h2>
+    <div class="row wrap">
+      <button id="load" class="btn btn-primary">Загрузить каталог</button>
+      <button id="sync" class="btn btn-ghost">Синхронизировать с релизами</button>
+      <button id="verify" class="btn btn-ghost">Проверить ссылки</button>
+    </div>
+    <div id="tools-status" class="status"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Приложения <span id="count" class="pill">0</span></h2>
+    <div id="apps"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Релизы без карточки</h2>
+    <div id="orphans"><p class="hint">Нажми «Синхронизировать с релизами».</p></div>
+  </section>
+
+  <section class="panel">
+    <h2>Как добавить новое приложение</h2>
+    <ol class="steps">
+      <li>
+        <b>Локально одной командой</b> — это основной путь, он сам делает релиз, заливает APK и правит каталог:
+        <pre class="code">$env:GH_TOKEN='ghp_...'
+C:\cherry\store\add-app.ps1 -Apk "C:\path\App.apk" -Id my-app -Name "My App" -Description "Описание"</pre>
+      </li>
+      <li>
+        <b>Вручную через GitHub</b> — создай релиз и перетащи APK на странице:
+        <a class="btn btn-ghost small" target="_blank" rel="noopener"
+           href="https://github.com/PentasOS/app-store/releases/new">Открыть «New release»</a>
+        затем здесь нажми «Синхронизировать с релизами» и заполни карточку.
+      </li>
+    </ol>
+    <p class="hint">
+      Почему нельзя залить APK прямо из этой страницы: <code>uploads.github.com</code> не отдаёт
+      CORS-заголовки, браузер режет запрос. Это ограничение GitHub, обойти его из JS нельзя.
+    </p>
+  </section>
+
+</main>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="admin.js"></script>
+</body>
+</html>
