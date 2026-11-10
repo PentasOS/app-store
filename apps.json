@@ -1,21 +1,21 @@
 {
-  "updated": "2026-11-10",
-  "apps": [
-    {
-      "id": "escape-from-hotel",
-      "name": "Escape From Hotel",
-      "version": "0.12b",
-      "author": "TinGames",
-      "package": "com.TinGames.EscapeFromHotel",
-      "emoji": "🏨",
-      "description": "Побег из отеля на движке Godot 4.7. Поддерживает мультиплеер через Epic Online Services.",
-      "size": "104.6 MB",
-      "sizeBytes": 109654363,
-      "sha256": "CE3CFE04FB5390770E1467A248AEDF1963B737E5F621A0FFAA78DC9D0C3F8BE1",
-      "versionCode": 16,
-      "tag": "efh-v0.12b",
-      "file": "EscapeFromHotel-0.12b.apk",
-      "updated": "2026-11-10"
-    }
-  ]
+    "apps":  [
+                 {
+                     "id":  "escape-from-hotel",
+                     "name":  "Escape From Hotel",
+                     "version":  "0.12b",
+                     "author":  "TinGames",
+                     "package":  "com.TinGames.EscapeFromHotel",
+                     "engine":  "Godot",
+                     "icon":  "icons/escape-from-hotel.webp",
+                     "description":  "Побег из отеля на Godot 4.7.2. В APK встроен Epic Online Services, есть сетевой режим.",
+                     "size":  "104.6 MB",
+                     "sizeBytes":  109654363,
+                     "sha256":  "CE3CFE04FB5390770E1467A248AEDF1963B737E5F621A0FFAA78DC9D0C3F8BE1",
+                     "tag":  "escape-from-hotel-v0.12b",
+                     "file":  "escape-from-hotel-0.12b.apk",
+                     "updated":  "2026-11-10"
+                 }
+             ],
+    "updated":  "2026-11-10"
 }
