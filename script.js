@@ -20,9 +20,14 @@ function formatDate(iso) {
   return d.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
 
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
 function iconHtml(app) {
-  if (app.icon) return `<img src="${app.icon}" alt="${app.name}" onerror="this.replaceWith(document.createTextNode('${app.emoji || '📦'}'))">`;
-  return app.emoji || '📦';
+  const fallback = esc(app.emoji || (app.name || '?').trim()[0]);
+  if (app.icon) {
+    return `<img src="${esc(app.icon)}" alt="" onerror="this.parentNode.textContent='${fallback}'">`;
+  }
+  return fallback;
 }
 
 // Ссылка на скачивание: либо явная, либо собирается из тега релиза и имени файла.
@@ -37,15 +42,18 @@ function releaseUrl(app) {
 
 function cardHtml(app) {
   return `
-    <article class="card" data-id="${app.id}">
+    <article class="card" data-id="${esc(app.id)}">
       <div class="app-icon">${iconHtml(app)}</div>
       <div class="card-body">
-        <div class="card-title">${app.name}</div>
-        <div class="app-sub">v${app.version}${app.author ? ' · ' + app.author : ''}</div>
-        <p class="card-desc">${app.description || ''}</p>
+        <div class="card-title">${esc(app.name)}</div>
+        <div class="app-sub">v${esc(app.version)}${app.author ? ' · ' + esc(app.author) : ''}</div>
+        <p class="card-desc">${esc(app.description)}</p>
         <div class="card-foot">
-          <span class="chip">${app.size || ''}</span>
-          <button class="btn btn-primary" data-download="${app.id}">Скачать</button>
+          <span class="chips">
+            ${app.size ? `<span class="chip">${esc(app.size)}</span>` : ''}
+            ${app.engine ? `<span class="chip">${esc(app.engine)}</span>` : ''}
+          </span>
+          <button class="btn btn-primary" data-download="${esc(app.id)}">Скачать</button>
         </div>
       </div>
     </article>`;
@@ -63,9 +71,11 @@ function openModal(app) {
   $('m-sub').textContent = `v${app.version}${app.author ? ' · ' + app.author : ''}`;
   $('m-desc').textContent = app.description || 'Описание не указано.';
   $('m-version').textContent = app.version || '—';
-  $('m-size').textContent = app.size || '—';
+  $('m-size').textContent = app.size || formatSize(app.sizeBytes);
   $('m-date').textContent = formatDate(app.updated);
   $('m-file').textContent = app.file || '—';
+  $('m-engine').textContent = app.engine || '—';
+  $('m-package').textContent = app.package || '—';
 
   const dl = $('m-download');
   dl.href = downloadUrl(app);
@@ -112,17 +122,20 @@ $('search').addEventListener('input', (e) => {
 });
 
 async function init() {
+  let updated = '';
   try {
     const res = await fetch('apps.json', { cache: 'no-store' });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
-    APPS = Array.isArray(data) ? data : (data.apps || []);
+    const all = Array.isArray(data) ? data : (data.apps || []);
+    updated = Array.isArray(data) ? '' : (data.updated || '');
+    APPS = all.filter(a => !a.hidden);
   } catch (err) {
     console.error('Не удалось загрузить apps.json:', err);
     APPS = [];
   }
   render(APPS);
-  $('count').textContent = `Приложений в каталоге: ${APPS.length} · обновлено ${formatDate(new Date().toISOString())}`;
+  $('count').textContent = `Приложений: ${APPS.length}` + (updated ? ` · каталог обновлён ${formatDate(updated)}` : '');
 }
 
 init();
